@@ -2,6 +2,7 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
 
 #define BASE 0
 #define NAV  1
@@ -9,6 +10,24 @@
 #define ADJ  3
 
 / {
+    input_processors {
+        sym_back_click_mapper: sym_back_click_mapper {
+            compatible = "zmk,input-processor-code-mapper";
+            #input-processor-cells = <0>;
+            type = <INPUT_EV_KEY>;
+            // INPUT_KEY_0 is not handled by the listener's mouse-button switch; use it as a sentinel.
+            map = <INPUT_BTN_0 INPUT_KEY_0>;
+        };
+
+        sym_back_click: sym_back_click {
+            compatible = "zmk,input-processor-behaviors";
+            #input-processor-cells = <0>;
+            type = <INPUT_EV_KEY>;
+            codes = <INPUT_KEY_0>;
+            bindings = <&kp LG(LBKT)>;
+        };
+    };
+
     conditional_layers {
         compatible = "zmk,conditional-layers";
         tri_layer {
