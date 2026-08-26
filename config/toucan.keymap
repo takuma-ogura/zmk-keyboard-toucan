@@ -10,6 +10,15 @@
 #define ADJ  3
 
 / {
+    macros {
+        sym_back_tap: sym_back_tap {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            // Send Command+[ as a self-contained tap so its release does not depend on SYM.
+            bindings = <&kp LG(LBKT)>;
+        };
+    };
+
     input_processors {
         sym_back_click_mapper: sym_back_click_mapper {
             compatible = "zmk,input-processor-code-mapper";
@@ -24,7 +33,7 @@
             #input-processor-cells = <0>;
             type = <INPUT_EV_KEY>;
             codes = <INPUT_KEY_0>;
-            bindings = <&kp LG(LBKT)>;
+            bindings = <&sym_back_tap>;
         };
     };
 
