@@ -12,20 +12,27 @@
 
 / {
     macros {
-        primary_via_cmd_right: primary_via_cmd_right {
+        // Trackpad tap -> self-contained left click, completed entirely on the central half.
+        // Why: the tap's BTN_0 press/release are sent right half -> left half as separate
+        // BLE notifications (service.c bt_gatt_notify) and enqueued with K_NO_WAIT
+        // (input_split.c). The pinnacle driver only reports button *changes*, so if a
+        // single release is lost the HID left button stays latched until reboot and the
+        // host ignores every physical click. Emitting press+release here removes that path.
+        tap_click: tap_click {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             wait-ms = <0>;
-            tap-ms = <0>;
-            bindings = <
-                &macro_press
-                &kp LGUI
-                &mkp RCLK
-                &macro_pause_for_release
-                &macro_release
-                &mkp RCLK
-                &kp LGUI
-            >;
+            tap-ms = <20>;
+            bindings = <&mkp LCLK>;
+        };
+
+        // SYM layer: trackpad tap -> self-contained mouse "back" button (MB4).
+        sym_back_tap: sym_back_tap {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <20>;
+            bindings = <&mkp MB4>;
         };
 
         physical_sym: physical_sym {
@@ -45,18 +52,18 @@
     };
 
     input_processors {
-        primary_via_cmd_right_processor: primary_via_cmd_right_processor {
+        tap_click_processor: tap_click_processor {
             compatible = "zmk,input-processor-behaviors";
             #input-processor-cells = <0>;
             codes = <INPUT_BTN_0>;
-            bindings = <&primary_via_cmd_right>;
+            bindings = <&tap_click>;
         };
 
-        sym_back_click_mapper: sym_back_click_mapper {
-            compatible = "zmk,input-processor-code-mapper";
+        sym_back_processor: sym_back_processor {
+            compatible = "zmk,input-processor-behaviors";
             #input-processor-cells = <0>;
-            type = <INPUT_EV_KEY>;
-            map = <INPUT_BTN_0 INPUT_BTN_3>;
+            codes = <INPUT_BTN_0>;
+            bindings = <&sym_back_tap>;
         };
     };
 
