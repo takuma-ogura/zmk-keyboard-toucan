@@ -107,7 +107,7 @@
         compatible = "zmk,input-listener";
         status = "disabled";
         device = <&glidepoint_split>;
-        input-processors = <&zip_xy_scaler 250 100>;
+        input-processors = <&primary_via_cmd_right_processor &zip_xy_scaler 250 100>;
         sym_back {
             layers = <2>;
             input-processors = <&sym_back_click_mapper &zip_xy_scaler 250 100>;
@@ -115,6 +115,7 @@
         scroller {
             layers = <1>;
             input-processors = <
+                &primary_via_cmd_right_processor
                 &zip_xy_to_scroll_mapper
                 &zip_scroll_scaler 1 5
                 &zip_scroll_transform INPUT_TRANSFORM_Y_INVERT
