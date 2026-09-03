@@ -12,20 +12,6 @@
 
 / {
     macros {
-        // Trackpad tap -> self-contained left click, completed entirely on the central half.
-        // Why: the tap's BTN_0 press/release are sent right half -> left half as separate
-        // BLE notifications (service.c bt_gatt_notify) and enqueued with K_NO_WAIT
-        // (input_split.c). The pinnacle driver only reports button *changes*, so if a
-        // single release is lost the HID left button stays latched until reboot and the
-        // host ignores every physical click. Emitting press+release here removes that path.
-        tap_click: tap_click {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <20>;
-            bindings = <&mkp LCLK>;
-        };
-
         // SYM layer: trackpad tap -> self-contained mouse "back" button (MB4).
         sym_back_tap: sym_back_tap {
             compatible = "zmk,behavior-macro";
@@ -61,13 +47,6 @@
     };
 
     input_processors {
-        tap_click_processor: tap_click_processor {
-            compatible = "zmk,input-processor-behaviors";
-            #input-processor-cells = <0>;
-            codes = <INPUT_BTN_0>;
-            bindings = <&tap_click>;
-        };
-
         adj_forward_processor: adj_forward_processor {
             compatible = "zmk,input-processor-behaviors";
             #input-processor-cells = <0>;
@@ -129,7 +108,7 @@
             bindings = <
                 &mo TAB   &trans &kp F7 &kp F8 &kp F9 &kp F12   &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &trans &trans &kp BSPC
                 &kp LCTRL &bt BT_SEL 1  &kp F4 &kp F5 &kp F6 &kp F11   &kp C_BRI_DN &trans       &kp C_BRI_UP &trans       &bt BT_CLR   &bt BT_SEL 0
-                &kp LSHFT &trans &kp F1 &kp F2 &kp F3 &kp F10   &kp LG(LS(LC(N4))) &trans &trans       &trans       &trans       &trans
+                &kp LSHFT &trans &kp F1 &kp F2 &kp F3 &kp F10   &kp LG(LS(LC(N4))) &mkp LCLK &trans    &trans       &trans       &trans
                                    &kp LGUI &mo NAV &kp SPACE   &kp RET &physical_sym &kp RALT
             >;
         };

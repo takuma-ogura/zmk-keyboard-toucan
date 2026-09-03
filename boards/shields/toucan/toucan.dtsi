@@ -107,7 +107,12 @@
         compatible = "zmk,input-listener";
         status = "disabled";
         device = <&glidepoint_split>;
-        input-processors = <&tap_click_processor &zip_xy_scaler 250 100>;
+        // Raw BTN_0 passes straight through to the listener so the Cirque
+        // tap-and-drag gesture (tap, then press and hold) keeps the button down
+        // while dragging. The latch this used to cause was the input-thread stack
+        // overflow fixed in toucan_left.conf; ADJ has an &mkp LCLK key that clears
+        // the button if a split release is ever lost.
+        input-processors = <&zip_xy_scaler 250 100>;
         // ADJ (layer 3) is only active while NAV and SYM are both held, so it must be
         // listed before sym_back: overrides are tried in order and the first active
         // layer wins (input_listener.c filter_with_input_config).
@@ -122,7 +127,6 @@
         scroller {
             layers = <1>;
             input-processors = <
-                &tap_click_processor
                 &zip_xy_to_scroll_mapper
                 &zip_scroll_scaler 1 5
                 &zip_scroll_transform INPUT_TRANSFORM_Y_INVERT
