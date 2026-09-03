@@ -27,10 +27,3 @@ include:
     shield: toucan_right rgbled_adapter
   - board: seeeduino_xiao_ble
     shield: settings_reset
-  # Temporary diagnostic build: USB logging so a central-side fault can be read over the
-  # XIAO's USB CDC port (same setup as commit 7c0c97c). Remove once the tap path is verified.
-  - board: seeeduino_xiao_ble
-    shield: toucan_left rgbled_adapter nice_view_gem
-    snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_LOG_LEVEL_DBG=y
-    artifact-name: toucan_left_debug_logging
