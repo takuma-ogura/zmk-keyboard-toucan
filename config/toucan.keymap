@@ -35,6 +35,15 @@
             bindings = <&mkp MB4>;
         };
 
+        // ADJ layer: trackpad tap -> self-contained mouse "forward" button (MB5).
+        adj_forward_tap: adj_forward_tap {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <20>;
+            bindings = <&mkp MB5>;
+        };
+
         physical_sym: physical_sym {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -57,6 +66,13 @@
             #input-processor-cells = <0>;
             codes = <INPUT_BTN_0>;
             bindings = <&tap_click>;
+        };
+
+        adj_forward_processor: adj_forward_processor {
+            compatible = "zmk,input-processor-behaviors";
+            #input-processor-cells = <0>;
+            codes = <INPUT_BTN_0>;
+            bindings = <&adj_forward_tap>;
         };
 
         sym_back_processor: sym_back_processor {

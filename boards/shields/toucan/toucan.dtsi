@@ -108,6 +108,13 @@
         status = "disabled";
         device = <&glidepoint_split>;
         input-processors = <&tap_click_processor &zip_xy_scaler 250 100>;
+        // ADJ (layer 3) is only active while NAV and SYM are both held, so it must be
+        // listed before sym_back: overrides are tried in order and the first active
+        // layer wins (input_listener.c filter_with_input_config).
+        adj_forward {
+            layers = <3>;
+            input-processors = <&adj_forward_processor &zip_xy_scaler 250 100>;
+        };
         sym_back {
             layers = <2>;
             input-processors = <&sym_back_processor &zip_xy_scaler 250 100>;
