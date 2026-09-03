@@ -110,8 +110,8 @@
         // Raw BTN_0 passes straight through to the listener so the Cirque
         // tap-and-drag gesture (tap, then press and hold) keeps the button down
         // while dragging. The latch this used to cause was the input-thread stack
-        // overflow fixed in toucan_left.conf; ADJ has an &mkp LCLK key that clears
-        // the button if a split release is ever lost.
+        // overflow fixed in toucan_left.conf. A lost split release is self-healing:
+        // the driver reports button *changes*, so the next tap sends the release.
         input-processors = <&zip_xy_scaler 250 100>;
         // ADJ (layer 3) is only active while NAV and SYM are both held, so it must be
         // listed before sym_back: overrides are tried in order and the first active
