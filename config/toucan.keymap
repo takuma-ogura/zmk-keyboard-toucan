@@ -100,7 +100,10 @@
             display-name = "NAV";
             bindings = <
                 &kp LA(SPACE) &kp N1          &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &kp BSPC
-                &trans      &trans          &trans       &trans       &trans       &trans         &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
+                // The right pinky outer key holds Option. With NAV's arrows on h/j/k/l
+                // and Cmd on the left thumb, Cmd+Option+arrow moves pane focus and
+                // adding Shift resizes (see ~/.config/ghostty/config "Pane resize").
+                &trans      &trans          &trans       &trans       &trans       &trans         &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &kp LALT
                 // B holds Cmd+Option: with NAV's arrows on h/j/k/l this produces
                 // super+alt+arrow, which Ghostty maps to zellij's pane focus
                 // (see ~/.config/ghostty/config "Pane focus").
